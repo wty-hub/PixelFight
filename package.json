@@ -1,0 +1,10 @@
+{
+  "name": "PixelFight",
+  "uuid": "e8212423-616d-4851-827b-3793b450583b",
+  "creator": {
+    "version": "3.8.3"
+  },
+  "dependencies": {
+    "PixelFight": "file:"
+  }
+}

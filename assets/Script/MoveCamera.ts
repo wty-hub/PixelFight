@@ -2,7 +2,7 @@
  * 支持相机的拖动（即拖动视角）
  */
 
-import { _decorator, Camera, clamp, Component, EventTouch, Node, Rect, Vec2, Vec3 } from 'cc';
+import { _decorator, Camera, CCFloat, CCInteger, clamp, Component, EventTouch, Node, Rect, Vec2, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('MoveCamera')
@@ -10,10 +10,10 @@ export class MoveCamera extends Component {
     @property({ type: Rect })
     public moveRange: Rect = new Rect(-100, -100, 200, 200)
 
-    @property(Number)
-    public moveThreshold: Number = 10   //移动的阈值
+    @property(CCInteger)
+    public moveThreshold: number = 3   //每一帧移动速度的阈值
 
-    @property(Number)
+    @property(CCFloat)
     public moveSpeed: Number = 1        //移动的速度
 
     @property(Camera)
@@ -21,6 +21,15 @@ export class MoveCamera extends Component {
 
     private inDrag: boolean = false
     private lastTouchPosition: Vec2 = null
+    private startTouchPosition: Vec2 = null //开始拖动时的手指位置
+
+    /**
+     * 设置相机移动范围
+     * @param range 移动范围
+     */
+    setMoveRange(range: Rect) {
+        // this.camera.or
+    }
 
     onLoad() {
         //注册拖动相机相关的回调函数
@@ -31,23 +40,34 @@ export class MoveCamera extends Component {
     }
 
     onTouchStart(event: EventTouch) {
+        //避免点击事件被相机移动给吞掉，以下亦然
+        event.preventSwallow = true
         this.inDrag = true
         this.lastTouchPosition = event.getLocation()
+        this.startTouchPosition = event.getLocation()
     }
 
     onTouchMove(event: EventTouch) {
+        event.preventSwallow = true
         if (!this.inDrag) return
         let currentPosition = event.getLocation()
         let delta = currentPosition.subtract(this.lastTouchPosition)
         this.lastTouchPosition = event.getLocation()
-        this.moveCamera(delta)
+        if (delta.length() > this.moveThreshold) {
+            this.moveCamera(delta)
+        }
     }
 
     onTouchEnd(event: EventTouch) {
+        //如果移动范围小于阈值，说明用户的目的是点击，继续传播点击事件
+        //否则用户的目的就是移动，防止误点击
+        if (this.startTouchPosition.subtract(event.getLocation()).length() < 2 * this.moveThreshold)
+            event.preventSwallow = true
         this.inDrag = false
     }
 
     onTouchCancel(event: EventTouch) {
+        event.preventSwallow = true
         this.inDrag = false
     }
 

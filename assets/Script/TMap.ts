@@ -34,12 +34,20 @@ export class TMap extends Component {
     handleTileClick(touchLocation: Vec2) {
     }
 
-    getTiledMap() {
+    //设为私有，防止坐标轴带来的混乱
+    private getTiledMap() {
         return this.tiledMap
     }
 
+    /**
+     * 获取地图大小，以tile个数计算
+     */
     getMapSize() {
         return this.tiledMap.getMapSize()
+    }
+
+    getTileSize() {
+        return this.tiledMap.getTileSize()
     }
 
     //tiled map中的坐标轴方向与游戏中的不同

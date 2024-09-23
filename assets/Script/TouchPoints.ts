@@ -13,8 +13,6 @@ export class TouchPoints extends Component {
     public touchPointPrefab: Prefab = null
 
     private touchPoints: TouchPoint[] = []
-    private tileSize: Size = null
-    private layerSize: Size = null;
 
     //单例模式
     private static _instance: TouchPoints = null
@@ -27,23 +25,20 @@ export class TouchPoints extends Component {
     }
 
     start() {
-        this.tileSize = TMap.instance.getTiledMap().getTileSize()
-        const terrainLayer = TMap.instance.getTiledMap().getLayer("Terrain")
-        this.layerSize = terrainLayer.getLayerSize()
-        for (let x = 0; x < this.layerSize.width; x++) {
-            for (let y = 0; y < this.layerSize.height; y++) {
-                //tiled的默认坐标轴方向与cocos不同
-                const c = x
-                const r = this.layerSize.height - y - 1
+        //创建所有的触摸点
+        const tileSize = TMap.instance.getTileSize()
+        const mapSize = TMap.instance.getMapSize()
+        for (let x = 0; x < mapSize.width; x++) {
+            for (let y = 0; y < mapSize.height; y++) {
                 let touchPointGO = instantiate(this.touchPointPrefab)
                 touchPointGO.parent = this.node
                 let touchPoint = touchPointGO.getComponent(TouchPoint)
                 let position = new Vec2(
-                    (x + 0.5) * this.tileSize.width,
-                    (this.layerSize.height - y - 0.5) * this.tileSize.height
+                    (x + 0.5) * tileSize.width,
+                    (y + 0.5) * tileSize.height
                 )
-                touchPoint.init(position, this.tileSize, () => {
-                    this.onTouchPointLClicked(new Vec2(c, r))
+                touchPoint.init(position, tileSize, () => {
+                    this.onTouchPointLClicked(new Vec2(x, y))
                 })
                 this.touchPoints.push(touchPoint)
             }
@@ -54,11 +49,11 @@ export class TouchPoints extends Component {
 
     }
 
-    onTouchPointLClicked(cord: Vec2) {
-        console.log(`onTouchPointLClicked: (${cord.x}, ${cord.y})`)
-        console.log(`Terrain GID: ${TMap.instance.getTerrainGID(cord)}`)
-        console.log(`Unit GID: ${TMap.instance.getUnitGID(cord)}`)
-        console.log(`Object GID: ${TMap.instance.getObjectGID(cord)}`)
+    onTouchPointLClicked(pos: Vec2) {
+        console.log(`onTouchPointLClicked: (${pos.x}, ${pos.y})`)
+        console.log(`Terrain GID: ${TMap.instance.getTerrainGID(pos)}`)
+        console.log(`Unit GID: ${TMap.instance.getUnitGID(pos)}`)
+        console.log(`Object GID: ${TMap.instance.getObjectGID(pos)}`)
     }
 }
 

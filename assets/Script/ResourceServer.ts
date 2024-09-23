@@ -68,10 +68,7 @@ export class ResourceServer extends Component {
     }
 
     start() {
-        this.scheduleOnce(() => {
-            // 这里的 this 指向当前组件
-            this.loadSpriteFrames();
-        }, 0);
+        this.loadSpriteFrames()
     }
 
     update(deltaTime: number) {

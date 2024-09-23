@@ -38,19 +38,35 @@ export class TMap extends Component {
         return this.tiledMap
     }
 
+    getMapSize() {
+        return this.tiledMap.getMapSize()
+    }
+
+    //tiled map中的坐标轴方向与游戏中的不同
+    getCordInTiled(pos: Vec2) {
+        const mapSize = this.getMapSize()
+        return new Vec2(pos.x, mapSize.height - pos.y - 1)
+    }
+
     getTerrainGID(pos: Vec2) {
-        return this.tiledMap.getLayer("Terrain").getTileGIDAt(pos.x, pos.y)
+        const cord = this.getCordInTiled(pos)
+        return this.tiledMap.getLayer("Terrain").getTileGIDAt(cord.x, cord.y)
     }
 
     getUnitGID(pos: Vec2) {
-        return this.tiledMap.getLayer("Units").getTileGIDAt(pos.x, pos.y)
+        const cord = this.getCordInTiled(pos)
+        return this.tiledMap.getLayer("Units").getTileGIDAt(cord.x, cord.y)
     }
 
     getObjectGID(pos: Vec2) {
-        return this.tiledMap.getLayer("Objects").getTileGIDAt(pos.x, pos.y)
+        const cord = this.getCordInTiled(pos)
+        return this.tiledMap.getLayer("Objects").getTileGIDAt(cord.x, cord.y)
     }
 
     start() {
+        //隐藏地图物体层和单位层，实际的地图物体和单位交由Piece添加
+        this.node.getChildByName("Objects").active = false
+        this.node.getChildByName("Units").active = false
     }
 
     update(deltaTime: number) {

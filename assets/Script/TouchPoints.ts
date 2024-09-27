@@ -24,7 +24,7 @@ export class TouchPoints extends Component {
         TouchPoints._instance = this
     }
 
-    start() {
+    init() {
         //创建所有的触摸点
         const tileSize = TMap.instance.getTileSize()
         const mapSize = TMap.instance.getMapSize()

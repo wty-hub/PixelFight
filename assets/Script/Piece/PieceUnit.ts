@@ -34,7 +34,7 @@ export class PieceUnit extends Component {
     start() {
         this.sprite = this.node.getComponent(Sprite)
         EventManager.instance.node.on('spriteFrameLoadingDone', (event) => {
-            console.log('spriteFrameLoadingDone')
+            // console.log('spriteFrameLoadingDone')
             this.sprite.spriteFrame = ResourceServer.instance.getSpriteFrame(this.spriteFrameIndex)
         }, this)
     }

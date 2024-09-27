@@ -2,7 +2,7 @@
  * 资源加载
  */
 
-import { _decorator, Component, Event, math, Node, path, resources, Sprite, SpriteFrame } from 'cc';
+import { _decorator, Component, path, resources, SpriteFrame } from 'cc';
 import { EventManager } from './EventManager';
 const { ccclass, property } = _decorator;
 
@@ -33,7 +33,7 @@ export class ResourceServer extends Component {
                 this.spriteFrameMap.set(index, element)
             });
             EventManager.instance.node.emit('spriteFrameLoadingDone')
-            console.log('spriteFrameLoadingDone')
+            // console.log('spriteFrameLoadingDone')
         } catch (err) {
             console.log(err)
         }
@@ -67,7 +67,7 @@ export class ResourceServer extends Component {
         return this.spriteFrameMap.get(index)
     }
 
-    start() {
+    init() {
         this.loadSpriteFrames()
     }
 

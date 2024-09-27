@@ -146,8 +146,8 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 114.693,
-      "y": 62.903,
+      "x": 115.78,
+      "y": 65.984,
       "z": 1000
     },
     "_lrot": {
@@ -192,9 +192,9 @@
     "_far": 1000,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 155,
+      "g": 153,
+      "b": 153,
       "a": 255
     },
     "_depth": 1,
@@ -613,7 +613,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Piece",
+    "_name": "Pieces",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -823,7 +823,7 @@
     "_id": "1aqT6fCQVNA7pupa3WEg0d"
   },
   {
-    "__type__": "5d784gkaahAR6ccWW9OxOg/",
+    "__type__": "1be52OJ6pZMOoi9/3RW4Mfk",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -836,7 +836,7 @@
       "__uuid__": "1faaeec7-1331-46db-90b0-d781b4500803",
       "__expectedType__": "cc.Prefab"
     },
-    "_id": "90ocC7sApL9pKM8IJ0XDcy"
+    "_id": "caAPsEYyZGwJswutC1Zxbq"
   },
   {
     "__type__": "cc.Node",

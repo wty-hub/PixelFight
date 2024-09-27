@@ -23,6 +23,9 @@ export class TMap extends Component {
 
     protected onLoad(): void {
         TMap._instance = this;
+    }
+    
+    init() {
         this.tiledMap = this.node.getComponent(TiledMap)
     }
 

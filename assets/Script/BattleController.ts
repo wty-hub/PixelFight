@@ -1,6 +1,9 @@
-import { _decorator, BatchingUtility, Component, Node } from 'cc';
+import { _decorator, assetManager, Component, loader, Rect } from 'cc';
 import { MoveCamera } from './MoveCamera';
 import { TMap } from './TMap';
+import { ResourceServer } from './ResourceServer';
+import { Pieces } from './Pieces';
+import { TouchPoints } from './TouchPoints';
 const { ccclass, property } = _decorator;
 
 @ccclass('BattleController')
@@ -22,7 +25,14 @@ export class BattleController extends Component {
     }
 
     start() {
-
+        ResourceServer.instance.init()
+        TMap.instance.init()
+        const mapSize = TMap.instance.getMapSize()
+        const tileSize = TMap.instance.getTileSize()
+        const moveRange = new Rect(0, 0, tileSize.width * mapSize.width, tileSize.height * mapSize.height)
+        MoveCamera.instance.init(moveRange)
+        Pieces.instance.init()
+        TouchPoints.instance.init()
     }
 
     update(deltaTime: number) {

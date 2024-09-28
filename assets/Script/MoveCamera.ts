@@ -2,7 +2,7 @@
  * 支持相机的拖动（即拖动视角）
  */
 
-import { _decorator, Camera, CCFloat, CCInteger, clamp, Component, director, EventTouch, Node, Rect, size, Size, Vec2, Vec3, view } from 'cc';
+import { _decorator, Camera, CCFloat, CCInteger, clamp, Component, director, EventTouch, log, Node, Rect, size, Size, Vec2, Vec3, view } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('MoveCamera')
@@ -24,7 +24,7 @@ export class MoveCamera extends Component {
     private startTouchPosition: Vec2 = null //开始拖动时的手指位置
 
     private visibleSize: Size;  //世界大小
-    private scale: number;  
+    private scale: number;
 
     private static _instance: MoveCamera = null
     //单例模式
@@ -90,8 +90,8 @@ export class MoveCamera extends Component {
     onTouchEnd(event: EventTouch) {
         //如果移动范围小于阈值，说明用户的目的是点击，继续传播点击事件
         //否则用户的目的就是移动，防止误点击
-        if (this.startTouchPosition.subtract(event.getLocation()).length() < 2 * this.moveThreshold)
-            event.preventSwallow = true
+        // if (this.startTouchPosition.subtract(event.getLocation()).length() < 2 * this.moveThreshold)
+        event.preventSwallow = true
         this.inDrag = false
     }
 
@@ -103,9 +103,16 @@ export class MoveCamera extends Component {
     moveCamera(delta: Vec2) {
         let cameraPosition = this.camera.node.position
         let newPosition = new Vec3(cameraPosition.x - delta.x, cameraPosition.y - delta.y, 0)
-        newPosition.x = clamp(newPosition.x, this.moveRange.xMin, this.moveRange.xMax)
-        newPosition.y = clamp(newPosition.y, this.moveRange.yMin, this.moveRange.yMax)
+        newPosition.x = clamp(newPosition.x, this.moveRange.xMin + this.camera.orthoHeight, this.moveRange.xMax - this.camera.orthoHeight)
+        console.log(`moverangex: ${this.moveRange.xMin + this.camera.orthoHeight}, ${this.moveRange.xMax - this.camera.orthoHeight}`);
+
+        newPosition.y = clamp(newPosition.y, this.moveRange.yMin + this.camera.orthoHeight, this.moveRange.yMax - this.camera.orthoHeight)
+        // newPosition.x = clamp(newPosition.x,)
         this.camera.node.setPosition(newPosition)
+        // console.log('new position:')
+        // console.log(newPosition)
+        // console.log('camera width, height')
+        // console.log(this.camera.node.)
     }
 
     start() {

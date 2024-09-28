@@ -2,9 +2,9 @@
  * 管理触摸点
  */
 
-import { _decorator, Component, instantiate, log, Node, Prefab, Size, TiledMap, Vec2 } from 'cc';
+import { _decorator, Component, instantiate, Prefab, Vec2 } from 'cc';
 import { TMap } from './TMap';
-import { TouchPoint } from './Control/TouchPoint';
+import { TouchPoint, TouchPointState } from './Control/TouchPoint';
 const { ccclass, property } = _decorator;
 
 @ccclass('TouchPoints')
@@ -13,6 +13,7 @@ export class TouchPoints extends Component {
     public touchPointPrefab: Prefab = null
 
     private touchPoints: TouchPoint[] = []
+    private curSelectedPoint: TouchPoint;
 
     //单例模式
     private static _instance: TouchPoints = null
@@ -38,7 +39,7 @@ export class TouchPoints extends Component {
                     (y + 0.5) * tileSize.height
                 )
                 touchPoint.init(position, tileSize, () => {
-                    this.onTouchPointLClicked(new Vec2(x, y))
+                    this.onTouchPointLClicked(new Vec2(x, y), touchPoint)
                 })
                 this.touchPoints.push(touchPoint)
             }
@@ -49,11 +50,16 @@ export class TouchPoints extends Component {
 
     }
 
-    onTouchPointLClicked(pos: Vec2) {
-        console.log(`onTouchPointLClicked: (${pos.x}, ${pos.y})`)
-        console.log(`Terrain GID: ${TMap.instance.getTerrainGID(pos)}`)
-        console.log(`Unit GID: ${TMap.instance.getUnitGID(pos)}`)
-        console.log(`Object GID: ${TMap.instance.getObjectGID(pos)}`)
+    onTouchPointLClicked(pos: Vec2, touchPoint: TouchPoint) {
+        // console.log(`onTouchPointLClicked: (${pos.x}, ${pos.y})`)
+        // console.log(`Terrain GID: ${TMap.instance.getTerrainGID(pos)}`)
+        // console.log(`Unit GID: ${TMap.instance.getUnitGID(pos)}`)
+        // console.log(`Object GID: ${TMap.instance.getObjectGID(pos)}`)
+        if (this.curSelectedPoint) {
+            this.curSelectedPoint.switchState(TouchPointState.NONE)
+        }
+        this.curSelectedPoint = touchPoint
+        touchPoint.switchState(TouchPointState.SELECT)
     }
 }
 
